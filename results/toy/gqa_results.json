@@ -1,0 +1,158 @@
+[
+ {
+  "variant": "MHA",
+  "kv_heads": 8,
+  "method": "-",
+  "uptrain": 0,
+  "ppl": 2.685969947514579
+ },
+ {
+  "variant": "MHA + extra training (control)",
+  "kv_heads": 8,
+  "method": "-",
+  "uptrain": 100,
+  "ppl": 2.705631440179809
+ },
+ {
+  "variant": "GQA-4",
+  "kv_heads": 4,
+  "method": "adjacent",
+  "grouping_cost": 2898.161813273445,
+  "ppl_converted": 12.697224781102372,
+  "ppl": 2.931732204644778,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    4,
+    5
+   ],
+   [
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "variant": "GQA-4",
+  "kv_heads": 4,
+  "method": "similarity",
+  "grouping_cost": 2650.071486720945,
+  "ppl_converted": 15.912192406641182,
+  "ppl": 2.9094333556745138,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    4,
+    5
+   ],
+   [
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "variant": "GQA-2",
+  "kv_heads": 2,
+  "method": "adjacent",
+  "grouping_cost": 4430.931289775929,
+  "ppl_converted": 33.550312407272244,
+  "ppl": 3.7357531620909885,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    4,
+    5,
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "variant": "GQA-2",
+  "kv_heads": 2,
+  "method": "similarity",
+  "grouping_cost": 4149.9412749879175,
+  "ppl_converted": 30.47833052670883,
+  "ppl": 3.5217116295471884,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1,
+    4,
+    6
+   ],
+   [
+    2,
+    3,
+    5,
+    7
+   ]
+  ]
+ },
+ {
+  "variant": "GQA-1",
+  "kv_heads": 1,
+  "method": "adjacent",
+  "grouping_cost": 5204.338261710716,
+  "ppl_converted": 39.13197358812391,
+  "ppl": 5.328199505854753,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  ]
+ },
+ {
+  "variant": "GQA-1",
+  "kv_heads": 1,
+  "method": "similarity",
+  "grouping_cost": 5204.338261710716,
+  "ppl_converted": 39.13197358812391,
+  "ppl": 5.328199505854753,
+  "uptrain": 100,
+  "groups_layer0": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  ]
+ }
+]
