@@ -141,7 +141,7 @@ The cache list also works as `prompt_cache=` for mlx-lm's `stream_generate` (tes
 ## Tests
 
 ```bash
-pytest -q   # CPU-only, no downloads
+pytest -q   # 48 tests, CPU-only, no downloads (~1 min)
 ```
 
 * **Real vs. simulated:** quantized storage plus `mixed_sdpa` computes the same outputs as attending over quantize→dequantize values, across mixed plans, chunked prefill, decode steps, and writes that straddle the 256-token allocation boundary.
@@ -153,7 +153,7 @@ pytest -q   # CPU-only, no downloads
 * **GQA:** identity grouping and planted-duplicate heads convert exactly, similarity grouping recovers planted clusters, stays within 10% of brute-force optimum, and never costs more than adjacent grouping.
 * **CLI end to end** on a tiny local model.
 
-CI runs the suite on GitHub's Apple silicon runner.
+CI runs the suite on GitHub's Apple silicon runner, so it covers the Metal GPU kernels (including per-kernel real-vs-simulated attention checks).
 
 ## Limitations and next steps
 
