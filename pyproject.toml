@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kvbudget"
+version = "0.1.0"
+description = "Memory-budgeted mixed-precision KV cache for long-context on-device LLMs (MLX)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Jaya Chandra Dadi" }]
+dependencies = ["mlx>=0.29", "mlx-lm>=0.28", "numpy", "matplotlib", "datasets"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+kvbudget = "kvbudget.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["kvbudget*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
