@@ -46,7 +46,34 @@ def test_real_cache_matches_simulation(plan):
     x = mx.random.randint(0, 128, (2, 240))
     real = _run_chunks(m, x, make_cache(m, plan, real=True))
     sim = _run_chunks(m, x, make_cache(m, plan, real=False))
-    assert mx.allclose(real, sim, atol=1e-4).item()
+    diff = mx.abs(real - sim).max().item()
+    assert mx.allclose(real, sim, atol=1e-4).item(), (
+        f"max|diff|={diff:.3e} scale={mx.abs(sim).max().item():.3e} "
+        f"device={mx.default_device()}")
+
+
+@pytest.mark.parametrize("kb,vb", [(3, None), (None, 8), (4, 2), (3, 3), (None, 3), (2, None)])
+def test_single_layer_real_vs_sim(kb, vb):
+    """One layer with one K/V setting at a time (localizes kernel differences)."""
+    from kvbudget.cache import mixed_sdpa
+
+    mx.random.seed(0)
+    q = mx.random.normal((1, 4, 7, 64))
+    k = mx.random.normal((1, 2, 30, 64))
+    v = mx.random.normal((1, 2, 30, 64))
+
+    def prep(t, b):
+        if b is None:
+            return t, t
+        w, s, z = mx.quantize(t, group_size=64, bits=b)
+        return (w, s, z), mx.dequantize(w, s, z, group_size=64, bits=b)
+
+    kq, kd = prep(k, kb)
+    vq, vd = prep(v, vb)
+    real = mixed_sdpa(q, kq, vq, 0.125, "causal", kb, vb)
+    ref = mixed_sdpa(q, kd, vd, 0.125, "causal", None, None)
+    diff = mx.abs(real - ref).max().item()
+    assert diff < 1e-4, f"K{kb}V{vb}: max|diff|={diff:.3e} device={mx.default_device()}"
 
 
 @pytest.mark.parametrize("bits", [4, 8])
