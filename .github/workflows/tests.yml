@@ -11,4 +11,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
-      - run: pytest -q
+      - name: pytest
+        run: |
+          set -o pipefail
+          pytest -q -rf --tb=line 2>&1 | tee pytest.log
+      - name: report failures as annotations
+        if: failure()
+        run: |
+          grep -E "^(FAILED|ERROR)|Error:|assert " pytest.log | head -30 | while IFS= read -r line; do
+            echo "::error::${line:0:900}"
+          done
