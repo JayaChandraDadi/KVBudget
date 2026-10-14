@@ -68,7 +68,8 @@ def _run(model, seq: mx.array, caches, chunk: int, score_from: int, kl_pos: mx.a
                 lps.append(cur)
             else:
                 r = ref_lp[len(kls) : len(kls) + len(sel)].astype(mx.float32)
-                kl = (mx.exp(r) * (r - cur)).sum(axis=-1)
+                # KL >= 0 exactly; clamp float round-off (seen on Metal: ~-5e-8)
+                kl = mx.maximum((mx.exp(r) * (r - cur)).sum(axis=-1), 0.0)
                 kls.extend(kl.tolist())
         mx.eval(lps)
     return nll_sum, count, kls, (mx.concatenate(lps) if lps else None)
